@@ -5,7 +5,7 @@ import { ProductPriceApp } from './components/ProductPrice'
 function App() {
 
   return (
-    <div>
+    <div className='main'>
       <ProductPriceApp />
     </div>
   )

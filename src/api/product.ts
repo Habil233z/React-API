@@ -10,8 +10,12 @@ export async function fetchProduct(product:string ):Promise <{product: string; p
             price: 800000
         },
         {
-            name: "freeer",
+            name: "freezer",
             price: 3000000
+        },
+        {
+            name: "laptop",
+            price: 10000000
         }
     ])
     const searchProduct = product.toLowerCase()
