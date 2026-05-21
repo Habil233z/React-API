@@ -1,11 +1,12 @@
 import './App.css'
-import {WeatherApp} from "./components/WeatherApp"
+import { ProductPriceApp } from './components/ProductPrice'
+
 
 function App() {
 
   return (
     <div>
-      <WeatherApp />
+      <ProductPriceApp />
     </div>
   )
 }
