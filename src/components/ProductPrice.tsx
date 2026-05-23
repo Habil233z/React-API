@@ -5,12 +5,13 @@ export function ProductPriceApp() {
     const [productInput, setProductInput] = useState("")
     const [products, setProduct]: any = useState<{
         product: string,
-        price: number
+        price: number,
+        category: string
     } | null>(null)
     const [loading, setLoading] = useState(false)
     const debounceProduct = useDebounce(productInput, 500)
 
-    async function fetchProduct(product:string ):Promise <{product: string; price: number}> {
+    async function fetchProduct(product:string ):Promise <{product: string; price: number; category: string}> {
         let data: any = []
         const fetchData = async () => {
         try {
@@ -37,11 +38,13 @@ export function ProductPriceApp() {
                 resolve({
                 product: "test",
                 price: 0,
+                category: "null"
                 })
             } else {
             resolve({
                 product: data.name,
                 price: data.price,
+                category: data.category
                 })
             }}, 2000)
             })}
@@ -62,14 +65,22 @@ export function ProductPriceApp() {
     return (
         <>
             <h1>Product Price App</h1>
-            <input type="text" placeholder="enter product name" value={productInput} onChange={handleOnChange}/>
-            {loading && <p>Loading</p>}
+            <input type="text" placeholder="Enter product name" value={productInput} onChange={handleOnChange}/>
+            <div className="searchResult">
+            {!loading && !products &&(
+                <div>
+                <h2>Welcome to Product Price Finder</h2>
+                </div> 
+            )}
+
+            {loading && <h3>Loading</h3>}
 
             {products && !loading && products.price > 0 &&(
-                <>
-                <h2>{products.product}</h2>
+                <div className="productContainer">
+                <h2>{products.product.charAt(0).toUpperCase() + products.product.slice(1)}</h2>
+                <p>{products.category}</p>
                 <h2>RP {products.price}</h2>
-                </>
+                </div>
             )}
 
             {products && !loading && products.price === 0 &&(
@@ -77,6 +88,7 @@ export function ProductPriceApp() {
                 <h2>Product not found</h2>
                 </>
             )}
+            </div>
         </>
     )
 }

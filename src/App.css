@@ -5,15 +5,15 @@ body {
     display: flex;
     justify-content: center;
     align-self: center;
-    margin-top: 250px;
+    margin-top: 150px;
     height: 100%;
     width: 100%;
 }
 
 .main {
     border: 5px solid black;
-    height: 400px;
-    width: 600px;
+    height: 600px;
+    width: 800px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,4 +22,19 @@ body {
 
 input {
     height: 50px;
+    font-size: large;
+    text-align: center;
+}
+
+.searchResult {
+    margin-top: 50px;
+    height: 150px;
+}
+
+.productContainer {
+    border: 2px solid black;
+    width: 200px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: bisque;
 }
