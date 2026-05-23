@@ -4,25 +4,27 @@ import { fetchProduct } from "../api/product";
 
 export function ProductPriceApp() {
     const [productInput, setProductInput] = useState("")
-    const [productData, setProductData] = useState<{
-        product: string,
-        price: number
-    } | null>(null)
+    const [products, setProduct]: any = useState([])
+    const [error, setError] = useState(null)
     const [loading, setLoading] = useState(false)
-
+    const [query, setQuery] = useState('')
+    const [filteredData, setFilteredData]: any = useState([])
     const debounceProduct = useDebounce(productInput, 500)
 
-    useEffect(()=> {
-        if (debounceProduct) {
-            setLoading(true)
-            fetchProduct(debounceProduct)
-            .then((data)=> setProductData(data))
-            .finally(()=> setLoading(false))
-        }
-    }, [debounceProduct] )
-    
+    useEffect(() => {
+    fetch('http://localhost:3000/products')
+    .then(res => res.json())
+    .then(data => {
+    setProduct(data.data.name);
+    console.log(data.data)
+    setFilteredData(data.data);
+    })
+    .catch(err => console.error(err));
+    }, [debounceProduct]);
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setQuery(e.target.value)
+        setFilteredData(products)
         setProductInput(e.target.value)
     }
 
@@ -32,14 +34,14 @@ export function ProductPriceApp() {
             <input type="text" placeholder="enter product name" value={productInput} onChange={handleOnChange}/>
             {loading && <p>Loading</p>}
 
-            {productData && !loading && productData.price > 0 &&(
+            {filteredData && !loading && filteredData.price > 0 &&(
                 <>
-                <h2>{productData.product}</h2>
-                <h2>RP {productData.price}</h2>
+                <h2>{filteredData.name}</h2>
+                <h2>RP {filteredData.price}</h2>
                 </>
             )}
 
-            {productData && !loading && productData.price === 0 &&(
+            {filteredData && !loading && filteredData.price === 0 &&(
                 <>
                 <h2>Product not found</h2>
                 </>
