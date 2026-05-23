@@ -35,9 +35,15 @@ export function ProductPriceApp() {
         return new Promise((resolve) => {
             setTimeout(()=> {
             console.log(data)
+            if (data === undefined) {
+                resolve({
+                product: "test",
+                price: 0,
+                })
+            }
             resolve({
-                product: data.name,
-                price: data.price,
+                product: data.name || "test",
+                price: data.price || 0,
                 })
             }, 2000)
             }
