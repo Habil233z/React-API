@@ -9,8 +9,6 @@ export function ProductPriceApp() {
     } | null>(null)
     const [loading, setLoading] = useState(false)
     const debounceProduct = useDebounce(productInput, 500)
-    const [data, setData] = useState([])
-
 
     async function fetchProduct(product:string ):Promise <{product: string; price: number}> {
         let data: any = []
@@ -19,13 +17,13 @@ export function ProductPriceApp() {
             const response = await fetch("http://localhost:3000/products")
 
             if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`)
+            throw new Error(`Fail to Fetch. Status: ${response.status}`)
             }
 
         const result = await response.json();
         const array = result.data
         const searchProduct = product.toLowerCase()
-        data= array.find(data => data.name == searchProduct)
+        data= array.find((data: { name: string; }) => data.name == searchProduct)
         } catch (err) {
             console.log(err)
         }
@@ -40,15 +38,13 @@ export function ProductPriceApp() {
                 product: "test",
                 price: 0,
                 })
-            }
+            } else {
             resolve({
-                product: data.name || "test",
-                price: data.price || 0,
+                product: data.name,
+                price: data.price,
                 })
-            }, 2000)
-            }
-        )}
-
+            }}, 2000)
+            })}
 
     useEffect(() => {
     if (debounceProduct) {
