@@ -1,27 +1,19 @@
 export async function fetchProduct(product:string ):Promise <{product: string; price: number}> {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/products")
 
-    const data = ([
-        {
-            name: "tv",
-            price: 80000000
-        },
-        {
-            name: "bike",
-            price: 800000
-        },
-        {
-            name: "freezer",
-            price: 3000000
-        },
-        {
-            name: "laptop",
-            price: 10000000
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`)
         }
-    ])
-    const searchProduct = product.toLowerCase()
-    const result: any = data.find(data => data.name == searchProduct)
 
-    if (result === undefined) {
+    const result = await response.json();
+    const array = result.data
+    const searchProduct = product.toLowerCase()
+    const data: any = array.find(data => data.name == searchProduct)
+    console.log(data)
+
+    if (data === undefined) {
         return new Promise((resolve) => {
         setTimeout(()=> {
             resolve({
@@ -34,10 +26,17 @@ export async function fetchProduct(product:string ):Promise <{product: string; p
         return new Promise((resolve) => {
         setTimeout(()=> {
             resolve({
-                product: result.name,
-                price: result.price,
+                product: data.name,
+                price: data.price,
             })
         }, 2000)
     })
     }
+      } catch (err) {
+        console.log(err)
+      }
+    };
+
+    fetchData();
+
 }
