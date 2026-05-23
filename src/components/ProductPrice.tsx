@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import useDebounce from "../hooks/debounce"
-import { fetchProduct } from "../api/product";
 
 export function ProductPriceApp() {
     const [productInput, setProductInput] = useState("")
@@ -10,6 +9,50 @@ export function ProductPriceApp() {
     } | null>(null)
     const [loading, setLoading] = useState(false)
     const debounceProduct = useDebounce(productInput, 500)
+    const [data, setData] = useState([])
+
+
+    async function fetchProduct(product:string ):Promise <{product: string; price: number}> {
+        
+        const fetchData = async () => {
+        try {
+            const response = await fetch("http://localhost:3000/products")
+
+            if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`)
+            }
+
+        const result = await response.json();
+        const array = result.data
+        const searchProduct = product.toLowerCase()
+        const data: any = array.find(data => data.name == searchProduct)
+       setData(data)
+        } catch (err) {
+            console.log(err)
+        }
+        };
+
+        fetchData();
+        if (data === undefined) {
+            return new Promise((resolve) => {
+            setTimeout(()=> {
+                resolve({
+                    product: "test",
+                    price: 0,
+                })
+            }, 2000)
+        })
+        } else {
+            return new Promise((resolve) => {
+            setTimeout(()=> {
+                resolve({
+                    product: data.name,
+                    price: data.price,
+                })
+            }, 2000)
+        })
+        }}
+
 
     useEffect(() => {
     if (debounceProduct) {
@@ -32,7 +75,7 @@ export function ProductPriceApp() {
 
             {products && !loading && products.price > 0 &&(
                 <>
-                <h2>{products.name}</h2>
+                <h2>{products.product}</h2>
                 <h2>RP {products.price}</h2>
                 </>
             )}
